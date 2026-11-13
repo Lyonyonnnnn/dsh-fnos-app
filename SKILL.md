@@ -80,6 +80,18 @@ metadata:
 判据：`nginx access.log` 里是否有这次请求。
 有请求但 302 → 认证/跨域；**没请求** → 浏览器在本地就拦了。
 
+
+### `disable_authorization_path` 必须是 false
+
+manifest 里这一项为 `true` 时，飞牛**不会给桌面磁贴带上认证参数**。表现：
+从「控制台/应用中心」点进去正常，从桌面图标点进去 302 到登录页或回 `invalid token`。
+
+```ini
+disable_authorization_path = false
+```
+
+本机对照：Harness / daymark / fygo-browser 等能正常开的是 `false`；`true` 的那几个都是靠别的路径进的。
+
 ## 其他实测结论
 
 - mihomo 的控制器**不支持** `external-controller: unix:///path`，要用 **`external-controller-unix: /path`**（CLI `-ext-ctl-unix`）
