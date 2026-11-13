@@ -1,0 +1,50 @@
+#!/bin/bash
+# Clash Meta 生命周期：单进程（gateway.py 内部监督 mihomo）
+LOG_FILE="${TRIM_PKGVAR}/info.log"
+PID_FILE="${TRIM_PKGVAR}/app.pid"
+DATA_DIR="${TRIM_PKGVAR}"
+SOCK="${TRIM_APPDEST}/app.sock"
+
+log_msg() { echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "${LOG_FILE}"; }
+
+start_process() {
+    if status; then log_msg "already running"; return 0; fi
+    log_msg "starting ..."
+    mkdir -p "${DATA_DIR}"
+    /usr/bin/python3 "${TRIM_APPDEST}/bin/gateway.py" \
+        --sock "${SOCK}" \
+        --web "${TRIM_APPDEST}/www" \
+        --prefix /app/clashmeta \
+        --mihomo "${TRIM_APPDEST}/bin/mihomo" \
+        --datadir "${DATA_DIR}" >> "${LOG_FILE}" 2>&1 &
+    printf "%s" "$!" > "${PID_FILE}"
+    log_msg "pid=$!"
+    return 0
+}
+
+stop_process() {
+    log_msg "stopping ..."
+    [ -r "${PID_FILE}" ] || { log_msg "no pidfile"; return 0; }
+    pid=$(head -n 1 "${PID_FILE}" | tr -d '[:space:]')
+    if [ -n "${pid}" ] && kill -0 "${pid}" 2>/dev/null; then
+        kill -TERM "${pid}" 2>/dev/null
+        for i in $(seq 1 10); do kill -0 "${pid}" 2>/dev/null || break; sleep 1; done
+        kill -0 "${pid}" 2>/dev/null && kill -KILL "${pid}" 2>/dev/null
+        log_msg "stopped pid=${pid}"
+    fi
+    rm -f "${PID_FILE}"
+    return 0
+}
+
+status() {
+    [ -r "${PID_FILE}" ] || return 1
+    pid=$(head -n 1 "${PID_FILE}" | tr -d '[:space:]')
+    [ -n "${pid}" ] && kill -0 "${pid}" 2>/dev/null
+}
+
+case "$1" in
+    start)  start_process ;;
+    stop)   stop_process ;;
+    status) status && exit 0 || exit 3 ;;
+    *)      exit 1 ;;
+esac

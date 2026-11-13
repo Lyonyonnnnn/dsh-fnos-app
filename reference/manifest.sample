@@ -1,0 +1,13 @@
+appname               = clashmeta
+version               = 1.0.0
+display_name          = Clash Meta
+desc                  = <p>Clash Meta 内核 + MetaCubeXD 控制台。点开即用，代理端口 7890（HTTP/SOCKS5 同端口），局域网可访问。</p><p>控制面板通过飞牛统一网关访问，不额外暴露管理端口。</p>
+platform              = x86
+source                = thirdparty
+maintainer            = Lyon
+distributor           = Lyon
+os_min_version        = 1.1.3100
+checkport             = false
+disable_authorization_path = true
+desktop_uidir         = ui
+desktop_applaunchname = clashmeta.Application

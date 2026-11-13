@@ -1,0 +1,16 @@
+{
+    ".url": {
+        "clashmeta.Application": {
+            "title": "Clash Meta",
+            "desc": "Clash Meta 代理控制台",
+            "icon": "images/icon_{0}.png",
+            "type": "iframe",
+            "protocol": "",
+            "gatewayPrefix": "/app/clashmeta",
+            "gatewaySocket": "app.sock",
+            "url": "/app/clashmeta/",
+            "allUsers": false,
+            "control": { "accessPerm": "editable" }
+        }
+    }
+}
