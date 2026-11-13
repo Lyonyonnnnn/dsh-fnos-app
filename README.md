@@ -47,7 +47,7 @@
 
 | 文件 | 作用 |
 |---|---|
-| `SKILL.md` | 主手册：目录结构、ifframe/url 两种入口、网关五件事、同源陷阱、上线检查清单、排错表 |
+| `SKILL.md` | 主手册：目录结构、iframe/url 两种入口、网关五件事、同源陷阱、上线检查清单、排错表 |
 | `reference/gateway.py` | 生产级网关：静态 + 反代 + WS 101 透传 + 子进程监督 |
 | `reference/cmd-main` | 生命周期脚本：pidfile、TERM→KILL、status 退出码 |
 | `reference/manifest.sample` | manifest 模板，改字段即用 |
